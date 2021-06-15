@@ -3,6 +3,11 @@ function Dia = GetDia(Set,PairDist)
     Dia=0;
     if( isempty(Set))
         return;
+    else
+        if(length(Set)==1)
+            Dia=0;
+            return;
+        end
     end;
         Combos=nchoosek(Set,2);
         for i=1:size(Combos,1)
