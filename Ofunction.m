@@ -1,3 +1,4 @@
+%objectif function
 function f = Ofunction(SelectedSet,PairDist,Workers)
 SetDia = GetDia(SelectedSet,PairDist);
 SetCost = CalcCost(SelectedSet,Workers);

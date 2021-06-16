@@ -24,19 +24,32 @@ PairDist = [0.00 1.00 0.66 0.66 0.85 0.66 ;
             0.66 0.85 0.40 0.00 0.40 0.00 ; 
     ];
 NumItr=10;
-initial=(rand(30,6));
-
+initial=(rand(30,6));   
 [c,l] = size(initial);
+b= false;
+while( b== false)
+for(a=1:l)
+    BestSetBinary(a)=round(1*rand);
+end
+    BestSet = find(BestSetBinary)
+    b=ChekCost(BestSet,Workers,Task);
+    b=ChekSkills(BestSet,Workers,Task);
+end
 for (itr=1:NumItr)
 %newSolus = zeros(n,m);
-pop = initial
+pop = initial;
+newSolus = pop;
 %crossover
-newSolusC  = Crossover(pop)
+if(rand>rand)
+newSolus  = Crossover(pop);
+end
 %mutation
-newSolusM = Mutation(newSolusC)
+if(rand>rand)
+newSolus = Mutation(newSolus);
+end
 %all solutions ( initial population of individuals 
 %and our individus after crossover and mutation)
-all = cat(1,pop,newSolusM);
+all = cat(1,pop,newSolus);
 [n,m] = size(all);
 %generate classic population from quantums
 classic_Sols = zeros(n,m);
@@ -108,11 +121,12 @@ end
         
         [Of_values,idxof] = sort(Of_values,'ascend');
         QuanSol = QuanSol(idxof);
-        if( isempty(BestSetBinary))
-             disp('AUCUUUUUUUUUUN SOLUTION');
-            BestSetBinary=classic_Sols(SetIndx(1),:);
-        end
+
+        %New generation
         initial = NewGeneation(all,QuanSol,SetIndx,BestSetBinary,c);
-        disp('NEW GENERATIONNNNNNNNNNNNNNNNNNNNNNN');
+       
 end
+display('Best Team : ');
+BestSet
+        
 

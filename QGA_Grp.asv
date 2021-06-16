@@ -13,7 +13,7 @@ BestOf = 10;
 Workers = [0.66 1.00 0.53 0.00 0.13 0.00 ;
            0.00 0.00 0.66 0.73 0.66 0.13 ;
            0.00 0.33 0.53 0.00 0.80 0.93 ;
-           0.40 0.30 0.70 0.80 .0.50 0.80 ;
+           0.40 0.30 0.70 0.80 0.50 0.80 ;
     ];
 Task = [1.8 1.4 1.66 3.0 3];
 PairDist = [0.00 1.00 0.66 0.66 0.85 0.66 ;
@@ -25,15 +25,22 @@ PairDist = [0.00 1.00 0.66 0.66 0.85 0.66 ;
     ];
 NumItr=10;
 initial=(rand(30,6));
+for(a=1:)
+            BestSetBinary=classic_Sols(SetIndx(1),:);
 
+        
 [c,l] = size(initial);
 for (itr=1:NumItr)
 %newSolus = zeros(n,m);
 pop = initial
 %crossover
-newSolusC  = Crossover(pop)
+if(rand>rand)
+newSolusC  = Crossover(pop);
+end
 %mutation
-newSolusM = Mutation(newSolusC)
+if(rand>rand)
+newSolusM = Mutation(newSolusC);
+end
 %all solutions ( initial population of individuals 
 %and our individus after crossover and mutation)
 all = cat(1,pop,newSolusM);
@@ -108,11 +115,9 @@ end
         
         [Of_values,idxof] = sort(Of_values,'ascend');
         QuanSol = QuanSol(idxof);
-        if( isempty(BestSetBinary))
-             disp('AUCUUUUUUUUUUN SOLUTION');
-            BestSetBinary=classic_Sols(SetIndx(1),:);
-        end
+
+        %New generation
         initial = NewGeneation(all,QuanSol,SetIndx,BestSetBinary,c);
-        disp('NEW GENERATIONNNNNNNNNNNNNNNNNNNNNNN');
+       
 end
 
