@@ -6,9 +6,9 @@ BestS
 QSol
 all
 if(length(QSol)>PopSize)
-    max = PopSize;
+    max = PopSize
 else
-    max =length(QSol);
+    max =length(QSol)
 end
 for (c=1:max)
     newSolus(c,:)=all(QSol(c),:)
