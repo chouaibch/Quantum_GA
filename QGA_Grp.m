@@ -23,9 +23,16 @@ PairDist = [0.00 1.00 0.66 0.66 0.85 0.66 ;
             0.85 0.66 0.66 0.40 0.00 0.40 ;
             0.66 0.85 0.40 0.00 0.40 0.00 ; 
     ];
+
+%Number of iturations
 NumItr=10;
-initial=(rand(30,6));   
+
+%Random initialization of our population
+initial=(rand(5,6));   
 [c,l] = size(initial);
+
+%Random initialization of our best binary
+%that satisfy constraint of skill and cost
 Bskiil= false;
 Bcost= false;
 while( Bskiil== false || Bcost== false)
@@ -36,8 +43,14 @@ end
     Bcost=ChekCost(BestSet,Workers,Task);
     Bskiil=ChekSkills(BestSet,Workers,Task);
 end
+%Value of objective function for best birary
 BestOf = Ofunction(BestSet,PairDist,Workers); 
+disp(['The initial best binary is: [' num2str(BestSetBinary(:).') ']']) ;
+disp(['Our best solution is: [' num2str(BestSet(:).') ']']) ;
+fprintf('Objectif Funtion = %f .\n',BestOf);
+disp('QGA are Started ' );
 for (itr=1:NumItr)
+fprintf('//////////////////////////////////// Genaration = %d \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\.\n',itr);
 %newSolus = zeros(n,m);
 pop = initial;
 newSolus = pop;
@@ -64,20 +77,20 @@ for (i=1:n)
 end
 
 for (i=1:n)
-    BinarySet = classic_Sols(i,:)
-    SelectedSet = find(BinarySet)
+    BinarySet = classic_Sols(i,:);
+    SelectedSet = find(BinarySet);
     %For each SelectedSet check Skill and Cost constraints
     %Checking if cost constraint is satisfied
     %SetCost = CalcCost(SelectedSet,Workers);
     
     if(ChekCost(SelectedSet,Workers,Task)==false)
      %   disp(SetCost);
-        display('Cost constraint is not satisfied.');
+      %  display('Cost constraint is not satisfied.');
         SetIndx(end+1)= i;
         SetOfindx(end+1)=  Ofunction(SelectedSet,PairDist,Workers);
     else
-        display('Cost constraint is satisfied.');
-        display('Checking skills constraints :');
+       % display('Cost constraint is satisfied.');
+       % display('Checking skills constraints :');
         %checking skills constraints
         SetSkill = 0;
           % for d=1 : size(Workers,1)-1
@@ -86,29 +99,41 @@ for (i=1:n)
               %  display(SetSkill);
             if(ChekSkills(SelectedSet,Workers,Task)==false)
                % SetSkill = 0;
-                display('Skill constraint is not satisfied');
-                display('--------------------------------------------');
+             %   display('Skill constraint is not satisfied');
+              %  display('--------------------------------------------');
              %   SetOf = Ofunction(SelectedSet,PairDist,Workers);
                 SetIndx(end+1)= i;
                 SetOfindx(end+1)=  Ofunction(SelectedSet,PairDist,Workers);
                 
             else
-                display('Skill constraint is satisfied');
+               % display('Skill constraint is satisfied');
                % if(d == size(Workers,1)-1)
                    % SetDia = GetDia(SelectedSet,PairDist);
                     SetOf = Ofunction(SelectedSet,PairDist,Workers);
                     %diary on;
-                    disp('******Set found******');
-                    disp(SelectedSet);
+                    disp('------- | Solution found | -------');
+                  %  disp(SelectedSet);
+                  disp(['The Solution is: [' num2str(SelectedSet(:).') ']']) ;
+                  fprintf('Cost = %f .\n',CalcCost(SelectedSet,Workers));
+                  for d=1 : size(Workers,1)-1
+                    SetSkill = CalcSkills(SelectedSet,Workers,d);
+                     fprintf('Skills in domain : %d  = %f \n',d,SetSkill);
+                   %  display(SetSkill);
+                  end
+     
+                  fprintf('Objectif Funtion = %f .\n',SetOf);
                     QuanSol(end+1) = i;
                     Of_values(end+1) = SetOf;
                   %  fprintf('Cost : %f \n',SetCost);              
                    % fprintf('Dia : %f \n',SetOf);
-                    disp('********************');
+                    disp('------------------------------------');
                     %diary off;
                     if(BestOf>SetOf)
                        % diary on;
                         disp('Best Set updated');
+                        disp(['The best binary is: [' num2str(BinarySet(:).') ']']) ;
+                        disp(['Our best solution is: [' num2str(SelectedSet(:).') ']']) ;
+                        fprintf('Objectif Funtion = %f .\n',SetOf);
                        % diary off;
                         BestOf = SetOf;
                         BestSetBinary = BinarySet;
@@ -131,12 +156,14 @@ end
         %sorted by objective function value
         [Of_values,idxof] = sort(Of_values,'ascend');
         QuanSol = QuanSol(idxof);
-
+        fprintf('//////////////////////////////////// End genaration = %d \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\.\n',itr);
+        disp('New generation');
         %New generation
         initial = NewGeneation(all,QuanSol,SetIndx,BestSetBinary,c);
        
 end
-display('Best Team : ');
-BestSet
+
+disp(['Our best solution is: [' num2str(BestSet(:).') ']']) ;
+fprintf('Objectif Funtion = %f .\n',BestOf);
         
 

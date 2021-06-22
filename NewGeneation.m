@@ -1,17 +1,14 @@
 function Ng = NewGeneation(all,QSol,Others,BestS,PopSize)
-C=0.8
+C=0.8;
 [n,m] = size(all);
 newSolus = [];
-BestS
-QSol
-all
 if(length(QSol)>PopSize)
-    max = PopSize
+    max = PopSize;
 else
-    max =length(QSol)
+    max =length(QSol);
 end
 for (c=1:max)
-    newSolus(c,:)=all(QSol(c),:)
+    newSolus(c,:)=all(QSol(c),:);
 end
 r = PopSize - length(QSol);
 x=1;
